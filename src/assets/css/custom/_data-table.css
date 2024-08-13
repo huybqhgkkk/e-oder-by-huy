@@ -1,0 +1,173 @@
+/* // 
+// _gridjs.scss
+// */
+
+.gridjs-container {
+  padding: 0;
+  display: block;
+  @apply text-default-600;
+}
+
+.gridjs-wrapper {
+  box-shadow: none;
+  border-radius: 0px;
+  @apply border border-collapse border-default-200;
+  @apply rounded-t-md;
+}
+
+button.gridjs-sort.gridjs-sort-neutral {
+  @apply !bg-none before:content-["\ea02"] font-[Phosphor];
+}
+
+button.gridjs-sort.gridjs-sort-asc {
+  @apply !bg-none before:content-["\e9fe"] font-[Phosphor];
+}
+
+button.gridjs-sort.gridjs-sort-desc {
+  @apply !bg-none before:content-["\ea01"] font-[Phosphor];
+}
+
+.gridjs-table {
+  width: 100%;
+}
+
+.gridjs-tbody,
+td.gridjs-td {
+  @apply bg-transparent;
+}
+
+th.gridjs-th,
+td.gridjs-td {
+  @apply border p-4 border-default-200 text-default-900;
+}
+
+th {
+  &.gridjs-th {
+    @apply bg-default-100;
+    border-top: 0;
+
+  }
+
+  &.gridjs-th-sort {
+
+    &:focus,
+    &:hover {
+      @apply bg-default-100;
+    }
+  }
+}
+
+.gridjs-head {
+  padding-top: 0;
+}
+
+.gridjs-footer {
+  @apply shadow-none border border-t-0 bg-transparent border-default-200;
+}
+
+.gridjs-summary {
+  @apply text-default-800 !mt-2;
+}
+
+.gridjs-footer {
+  .gridjs-pagination {
+
+    /* // .gridjs-pages{
+  // @apply -space-x-1;
+  // } */
+
+    .gridjs-pages {
+      @apply flex items-center gap-2;
+
+      button {
+        border-right: 1px solid !important;
+        @apply text-default-600 text-xs px-3 py-2 bg-default-50 !border !border-default-200 !rounded;
+        outline: none;
+        user-select: none;
+
+        &:disabled,
+        &:hover:disabled,
+        &[disabled] {
+          @apply text-default-600 bg-default-100 !border-default-200;
+        }
+
+        &:hover {
+          @apply text-primary bg-primary/20 !border-primary/40;
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
+
+        &.gridjs-currentPage {
+          @apply bg-default-100 text-primary !border-primary font-medium;
+        }
+      }
+
+    }
+  }
+}
+
+.gridjs-search {
+  position: relative;
+  float: left;
+}
+
+input.gridjs-input {
+  @apply form-input rounded-lg border border-default-200 px-4 py-2.5 dark:bg-default-50 w-full form-input;
+
+  /* &:focus {
+  @apply shadow-none border border-default-200;
+  } */
+}
+
+th.gridjs-th {
+  .gridjs-th-content {
+    display: inline-block;
+    vertical-align: middle;
+    @apply font-semibold;
+  }
+}
+
+button.gridjs-sort {
+  display: inline-block;
+  vertical-align: middle;
+  width: 10px;
+  height: 20px;
+}
+
+th.gridjs-th-sort .gridjs-th-content {
+  width: calc(100% - 10px);
+}
+
+button {
+
+  &.gridjs-sort-asc,
+  &.gridjs-sort-desc {
+    background-size: 7px;
+  }
+}
+
+
+.gridjs-td {
+  .gridjs-checkbox {
+    vertical-align: top;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    appearance: none;
+  }
+}
+
+.gridjs-border-none {
+
+  td.gridjs-td,
+  th.gridjs-th {
+    border-inline-end-width: 0;
+    border-inline-start-width: 0;
+  }
+}
+
+.gridjs-loading-bar {
+  @apply bg-white dark:bg-default-200;
+}
