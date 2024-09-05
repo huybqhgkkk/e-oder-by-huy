@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { PasswordFormInput, TextFormInput } from "@/components";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { registerAccount } from "@/service/apis.jsx";
 import { toast } from "sonner";
 import { useTranslation } from 'react-i18next';
@@ -27,7 +27,7 @@ const RegisterForm = () => {
             .required(t('confirm_password')),
     });
 
-    const { control, handleSubmit } = useForm({
+    const { control, handleSubmit, reset, getValues } = useForm({
         resolver: yupResolver(registerFormSchema),
         defaultValues: {
             firstName: "",
@@ -38,6 +38,9 @@ const RegisterForm = () => {
         },
     });
 
+    useEffect(() => {
+        reset(getValues());
+    }, [t]);
     const submit = async (values) => {
         setLoading(true);
         registerAccount(values)

@@ -32,7 +32,6 @@ const DishesList = lazy(
 const ContactUs = lazy(() => import("../app/(client)/contact-us/page"));
 const FAQs = lazy(() => import("../app/(client)/faqs/page"));
 const Home = lazy(() => import("../app/(client)/home/page"));
-const Test = lazy(() => import("../app/(client)/test/page"));
 const Cart = lazy(() => import("../app/(client)/(protected)/cart/page"));
 const Checkout = lazy(
     () => import("../app/(client)/(protected)/checkout/page")
@@ -77,6 +76,10 @@ const AdminEditRestaurant = lazy(
     () => import("../app/admin/(restaurant)/edit-restaurant/page")
 );
 const AdminEmployees = lazy(() => import("../app/admin/(employees)/employees/page"));
+const AdminBranch = lazy(() => import("../app/admin/(branch)/restaurants/page"));
+const AdminAddBranch = lazy(() => import("../app/admin/(branch)/add-branch/page"));
+const AdminEditBranch = lazy(() => import("../app/admin/(branch)/edit-branch/page"));
+const AdminbranchDetails = lazy(() => import("../app/admin/(branch)/restaurants/[restaurantId]/page.jsx"));
 const AdminEmployeeDetails = lazy(
     () => import("../app/admin/(employees)/employees/[Id]/page")
 );
@@ -86,6 +89,7 @@ const AdminAddEmloyee = lazy(
 const AdminEditEmployee = lazy(
     () => import("../app/admin/(employees)/edit-employee/page")
 );
+const AdminSellers = lazy(() => import("../app/admin/(seller)/sellers/page"));
 const AdminSellerDetails = lazy(
     () => import("../app/admin/(seller)/sellers/[sellerId]/page")
 );
@@ -218,11 +222,6 @@ const clientRoutes = [
         name: "Home",
         element: <Home/>,
     },
-    {
-        path: "/test",
-        name: "Test",
-        element: <Test/>,
-    },
 ];
 
 const clientAccountRoutes = [
@@ -325,6 +324,26 @@ const adminRoutes = [
         element: <AdminEmployees/>,
     },
     {
+        path: "/admin/branch",
+        name: "Branch",
+        element: <AdminBranch/>,
+    },
+    {
+        path: "/admin/branch/:Id",
+        name: "Employee Details",
+        element: <AdminbranchDetails/>,
+    },
+    {
+        path: "/admin/add-branch",
+        name: "Add Employee",
+        element: <AdminAddBranch/>,
+    },
+    {
+        path: "/admin/edit-branch",
+        name: "Edit Employee",
+        element: <AdminEditBranch/>,
+    },
+    {
         path: "/admin/employee/:Id",
         name: "Employee Details",
         element: <AdminEmployeeDetails/>,
@@ -338,6 +357,11 @@ const adminRoutes = [
         path: "/admin/edit-employee",
         name: "Edit Employee",
         element: <AdminEditEmployee/>,
+    },
+    {
+        path: "/admin/sellers",
+        name: "Sellers",
+        element: <AdminSellers />,
     },
     {
         path: "/admin/sellers/:sellerId",

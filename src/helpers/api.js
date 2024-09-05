@@ -1,8 +1,6 @@
 import axios from 'axios';
-import {getToken, setToken, removeToken, getRefreshToken, removeRefreshToken} from './auth';
-
+import {getToken, setToken, removeToken, getRefreshToken, removeRefreshToken, removeAuth} from './auth';
 const API_URL = import.meta.env.VITE_API_URL;
-
 const api = axios.create({
     baseURL: API_URL,
     headers: {
@@ -11,12 +9,14 @@ const api = axios.create({
 });
 
 const EXCLUDED_ENDPOINTS = [
-    '/auth/login',
-    '/auth/register',
-    '/auth/otp',
-    'auth/verify-account',
-    'auth/regenerate-otp',
-    '/auth/forgot-password/check-mail'
+    '/api/v1/auth/login',
+    '/api/v1/auth/register',
+    '/api/v1/auth/otp',
+    '/api/v1/auth/verify-account',
+    '/api/v1/auth/regenerate-otp',
+    '/api/v1/auth/forgot-password/check-mail',
+    '/auth/url/v2',
+    '/auth/callback/v2',
 ];
 
 api.interceptors.request.use(
@@ -51,9 +51,10 @@ api.interceptors.response.use(
                 originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                 return api(originalRequest);
             } catch (refreshError) {
+                removeAuth();
                 removeToken();
                 removeRefreshToken();
-                window.location.href = '/';
+                window.location.href = '/auth/login';
                 return Promise.reject(refreshError);
             }
         }

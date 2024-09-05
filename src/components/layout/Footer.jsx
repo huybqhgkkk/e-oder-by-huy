@@ -12,6 +12,12 @@ const Footer = ({ hideLinks }) => {
     >
       <div className={cn("container", hideLinks && "ms-2")}>
         <div className="grid items-center gap-6 lg:grid-cols-2">
+          <p className="text-default-600">
+           coded with{" "}
+            <LuHeart size={16} className="inline fill-red-500 text-red-500" />{" "}
+            by E-team
+          </p>
+
           {!hideLinks && (
             <div className="flex justify-end gap-6">
               <Link to="" className="font-medium text-default-500">

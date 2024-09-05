@@ -17,5 +17,5 @@ const colorVariants = [
   "warning",
   "info",
 ];
-
-export { extendedColorVariants, colorVariants };
+const pageSizaDefault = 10;
+export { extendedColorVariants, colorVariants, pageSizaDefault };

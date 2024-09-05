@@ -1,12 +1,14 @@
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LuSearch } from "react-icons/lu";
 import { TextFormInput } from "../form";
+import { useTranslation } from "react-i18next";
 
-const TableSearchBox = () => {
+const TableSearchBox = ({ label, value, onChange, placeholder, ...rest }) => {
+  const { t } = useTranslation();
+
   const searchFilterSchema = yup.object({
-    search: yup.string().optional(),
+    [`search${label}`]: yup.string().optional(),
   });
 
   const { control } = useForm({
@@ -15,14 +17,16 @@ const TableSearchBox = () => {
   });
 
   return (
-    <TextFormInput
-      name="search"
-      control={control}
-      className="max-w-sm"
-      startInnerIcon={<LuSearch />}
-      placeholder="Search..."
-      fullWidth
-    />
+      <TextFormInput
+          name={`search${label}`}
+          label={label}
+          control={control}
+          placeholder={placeholder ?? t("search")}
+          fullWidth
+          value={value}
+          onChange={onChange}
+          {...rest}
+      />
   );
 };
 

@@ -6,6 +6,9 @@ import {
   ProductDetailView,
 } from "@/components";
 import { getDishById } from "@/helpers";
+import { MenuAPIs } from "../../../../../service/apis";
+import ProductDetailViewItem from "../../../../../components/ProductViewDetailViewItem";
+import DishDetailsSwiperItem from "../../../../../components/swipers/DishDetailsSwiperItem";
 
 const DishDetails = () => {
   const { adminDishId } = useParams();
@@ -16,11 +19,11 @@ const DishDetails = () => {
 
   useEffect(() => {
     (async () => {
-      const foundDish = await getDishById(Number(adminDishId));
-      if (!foundDish) {
-        navigate("/login");
+      const foundDish = await MenuAPIs.GetOne({ id: adminDishId });
+      if (foundDish) {
+        console.log("foundDish", foundDish);
+        setDish(foundDish.data);
       } else {
-        setDish(foundDish);
       }
     })();
   }, [adminDishId]);
@@ -37,10 +40,10 @@ const DishDetails = () => {
 
           <div className="grid gap-6 lg:grid-cols-2">
             <div className="rounded-lg border border-default-200 p-6">
-              <DishDetailsSwiper images={dish.images} />
+              <DishDetailsSwiperItem images={dish.images} />
             </div>
             <div className="rounded-lg border border-default-200 p-6">
-              <ProductDetailView dish={dish} />
+              <ProductDetailViewItem dish={dish} />
             </div>
           </div>
         </div>

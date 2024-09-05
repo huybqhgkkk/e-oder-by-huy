@@ -14,10 +14,6 @@ const menuItems = [
     name: "Features",
     link: "#features",
   },
-  {
-    name: "Test",
-    link: "/test",
-  },
 ];
 
 const TopMenu = () => {

@@ -1,26 +1,16 @@
 import {toast} from "sonner";
 
-
-export const showSuccessToast = (message, duration = 2000) => {
-    toast.success(message, {
+export const successMessage = (mes) => {
+    toast.success(mes, {
         position: "top-right",
-        autoClose: duration,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+        duration: 2000,
     });
 };
 
-export const showErrorToast = (message, duration = 2000) => {
-    toast.error(message, {
-        position: "top-right",
-        autoClose: duration,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+export const errorMessage = (mes, position= "top-right") => {
+    toast.error(mes, {
+        position,
+        duration: 2000,
     });
 };
+

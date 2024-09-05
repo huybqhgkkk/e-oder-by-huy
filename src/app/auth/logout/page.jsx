@@ -38,7 +38,7 @@ const Logout = () => {
     };
 
     logout();
-  }, [dispatch, removeSession, t]);
+  }, [removeSession]);
 
   return (
     <AuthFormLayout

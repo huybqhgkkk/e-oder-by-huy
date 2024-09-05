@@ -3,10 +3,11 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PasswordFormInput } from "@/components";
 import {useTranslation} from "react-i18next";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {changePassword} from "@/service/apis.jsx";
 import {toast} from "sonner";
+import {errorMessage} from "@/helpers/message.js";
 
 const CredentialsManagementForm = () => {
     const { t } = useTranslation();
@@ -31,25 +32,23 @@ const CredentialsManagementForm = () => {
             .required(t('confirm_new_password')),
     });
 
-    const { control, handleSubmit } = useForm({
+    const { control, handleSubmit, reset, getValues } = useForm({
         resolver: yupResolver(registerFormSchema),
     });
+
+    useEffect(() => {
+        reset(getValues());
+    }, [t]);
 
     const submit = async (value) => {
         setLoading(true);
         changePassword(value)
             .then((res) => {
-                toast.success(t('password_reset_successful'), {
-                    position: "top-right",
-                    duration: 2000,
-                });
+                errorMessage(t('password_reset_successful'));
                 navigate("/auth/login");
             })
             .catch((err) => {
-                toast.error(err?.response?.data?.result?.errorMessage || t('error_request'), {
-                    position: "top-right",
-                    duration: 2000,
-                });
+                errorMessage(err?.response?.data?.result?.errorMessage || t('error_request'))
             })
             .finally(() => {
                 setLoading(false);
@@ -73,7 +72,7 @@ const CredentialsManagementForm = () => {
         name="password"
         label={t('new_password')}
         containerClassName="mb-4"
-        placeholder="Enter your new password"
+        placeholder={t('enter_new_password')}
         control={control}
         fullWidth
       />
@@ -89,7 +88,7 @@ const CredentialsManagementForm = () => {
         <button
           type="submit"
           disabled={loading}
-          className="flex items-center justify-center gap-2 rounded-lg border border-primary bg-primary px-6 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-all duration-200  hover:bg-primary-500"
+          className="w-full md:w-fit  flex items-center justify-center gap-2 rounded-lg border border-primary bg-primary px-6 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition-all duration-200  hover:bg-primary-500"
         >
             {t('submit')}
         </button>

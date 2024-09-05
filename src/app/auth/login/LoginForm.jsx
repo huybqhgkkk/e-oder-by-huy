@@ -1,5 +1,4 @@
 import {Link} from "react-router-dom";
-import {LuCopy, LuLock, LuMail, LuShield, LuUser} from "react-icons/lu";
 import useLogin from "./useLogin";
 import {PasswordFormInput, TextFormInput} from "@/components";
 import {useTranslation} from 'react-i18next';

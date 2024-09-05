@@ -1,9 +1,13 @@
 import { usaImg, vnImg, jpImg } from "@/assets/data/images";
 import { LuGlobe } from "react-icons/lu";
 import { useTranslation } from "react-i18next";
-import {useEffect, useState} from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setLanguage } from "@/store/reduce/authSlice.js";
+import { LanguageAPIs } from "@/service/apis.jsx";
+import { errorMessage } from "@/helpers/message.js";
 
-const languages = [
+const languageList = [
     {
         name: "Vietnamese",
         image: vnImg,
@@ -22,21 +26,25 @@ const languages = [
 ];
 
 const LanguageDropdown = () => {
-    const { i18n } = useTranslation();
-    const [currentLanguage, setCurrentLanguage] = useState("vn");
+    const { i18n, t } = useTranslation();
+    const dispatch = useDispatch();
+    const currentLanguage = useSelector((state) => state.auth.language);
 
     useEffect(() => {
-        if (i18n.language !== "vn") {
-            i18n.changeLanguage("vn");
-        }
-        setCurrentLanguage(i18n.language);
-    }, [i18n]);
+        i18n.changeLanguage(currentLanguage);
+    }, [currentLanguage]);
 
     const changeLanguage = (code) => {
         i18n.changeLanguage(code);
-        setCurrentLanguage(code);
+        dispatch(setLanguage(code));
+        LanguageAPIs.setLanguage(code)
+            .then(() => {
+                // Language change successful
+            })
+            .catch(() => {
+                errorMessage(t('error_request'));
+            });
     };
-
 
     return (
         <div className="hs-dropdown relative inline-flex [--placement:bottom-right]">
@@ -47,10 +55,12 @@ const LanguageDropdown = () => {
             >
                 <LuGlobe size={24} />
             </button>
-            <div className="hs-dropdown-menu duration mt-2 hidden min-w-[12rem] rounded-lg border border-default-200 bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] hs-dropdown-open:opacity-100 dark:bg-default-50">
-                {languages.map((language) => (
+            <div
+                className="hs-dropdown-menu duration mt-2 hidden min-w-[12rem] rounded-lg border border-default-200 bg-white p-2 opacity-0 shadow-md transition-[opacity,margin] hs-dropdown-open:opacity-100 dark:bg-default-50"
+            >
+                {languageList.map((language) => (
                     <button
-                        key={language.name}
+                        key={language.code}
                         onClick={() => changeLanguage(language.code)}
                         className={`flex w-full items-center gap-x-3.5 rounded px-3 py-2 text-sm transition-all hover:bg-default-100 ${
                             currentLanguage === language.code ? "bg-default-200" : ""

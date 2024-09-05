@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig({
-  base: "/",
+  // base: "/yum_r/",
   plugins: [react()],
   define: { "process.env": {} },
   resolve: {
@@ -13,12 +13,5 @@ export default defineConfig({
   },
   server: {
     port: 5500,
-    proxy: {
-      '/api': {
-        target: 'http://103.179.191.177:8080',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
   },
 });

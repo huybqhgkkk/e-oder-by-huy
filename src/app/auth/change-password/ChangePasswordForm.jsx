@@ -5,7 +5,7 @@ import { PasswordFormInput } from "@/components";
 import { useNavigate } from "react-router-dom";
 import { changePassword } from "@/service/apis.jsx";
 import { toast } from "sonner";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useTranslation } from 'react-i18next';
 
 const ChangePasswordForm = () => {
@@ -31,9 +31,13 @@ const ChangePasswordForm = () => {
       .required(t('confirm_new_password')),
   });
 
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset, getValues } = useForm({
     resolver: yupResolver(registerFormSchema),
   });
+
+    useEffect(() => {
+        reset(getValues());
+    }, [t]);
 
   const submit = async (value) => {
     setLoading(true);

@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usaImg, vnImg, jpImg } from "@/assets/data/images";
-import { useState } from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {setLanguage} from "@/store/reduce/authSlice.js";
 
 const OfferAdBanner = () => {
   const { i18n } = useTranslation();
-  const [currentLanguage, setCurrentLanguage] = useState("vn");
+  const disaptch = useDispatch();
+  const currentLanguage = useSelector(state => state.auth.language);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    setCurrentLanguage(lng);
+    disaptch(setLanguage(lng));
   };
 
   const getLanguageDetails = () => {
@@ -43,7 +45,7 @@ const OfferAdBanner = () => {
                   />
                   <span className="text-xs font-medium">{label}</span>
                 </button>
-                <div className="hs-dropdown-menu z-50 mt-4 min-w-[140px] rounded-lg border border-default-100 bg-white p-1.5 opacity-0 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] transition-[opacity,margin] hs-dropdown-open:opacity-100 dark:bg-default-50">
+                <div className="absolute hs-dropdown-menu z-50 mt-4 min-w-[140px] rounded-lg border border-default-100 bg-white p-1.5 opacity-0 shadow-[rgba(17,_17,_26,_0.1)_0px_0px_16px] transition-[opacity,margin] hs-dropdown-open:opacity-100 dark:bg-default-50">
                   <ul className="flex flex-col gap-1">
                     <li>
                       <button

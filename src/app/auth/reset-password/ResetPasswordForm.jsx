@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { PasswordFormInput } from "@/components";
 import TextFormInput from "@/components/form/TextFormInput.jsx";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { forgotPassword, reSendOtp } from "@/service/apis.jsx";
 import { toast } from "sonner";
 import { useTranslation } from 'react-i18next';
@@ -28,9 +28,13 @@ const ResetPasswordForm = ({ email }) => {
             .required(t('enter_new_password_again')),
     });
 
-    const { control, handleSubmit } = useForm({
+    const { control, handleSubmit, reset, getValues } = useForm({
         resolver: yupResolver(registerFormSchema),
     });
+
+    useEffect(() => {
+        reset(getValues());
+    }, [t]);
 
     const submit = async (value) => {
         setLoading(true);

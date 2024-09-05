@@ -1,5 +1,9 @@
+import {useDispatch} from "react-redux";
+import {setIsAuthenticated, setRole} from "@/store/reduce/authSlice.js";
+
 export const getAuth = () => {
-    return localStorage.getItem('auth');
+    const auth = localStorage.getItem('auth');
+    return auth ? JSON.parse(auth) : null;
 };
 
 export const setAuth = (auth) => {
@@ -8,6 +12,9 @@ export const setAuth = (auth) => {
 };
 
 export const removeAuth = () => {
+    const dispatch = useDispatch();
+    dispatch(setIsAuthenticated(false));
+    dispatch(setRole(null));
     localStorage.removeItem('auth');
 };
 export const getToken = () => {

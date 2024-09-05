@@ -1,5 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Fragment, useCallback, useEffect, useRef, useState} from "react";
 import { LuChevronDown } from "react-icons/lu";
 import { findAllParent, findMenuItem, getMenuItemFromURL } from "@/helpers";
 import { cn } from "@/utils";
@@ -83,15 +83,48 @@ const MenuItem = ({ item, className, linkClassName }) => {
 };
 
 const MenuItemLink = ({ item, className }) => {
-  return (
-    <Link
-      className={className}
-      to={item.url ?? ""}
-      target={item.target}
-      data-menu-key={item.key}
-    >
-      {item.label}
-    </Link>
+    const navigate = useNavigate();
+    const sidebarRef = useRef(null);
+
+    const closeOverlayAndBackdrop = (url) => {
+        if (sidebarRef.current) {
+            const overlayInstance = window.HSOverlay.getInstance(sidebarRef.current);
+            if (overlayInstance) {
+                overlayInstance.hide();
+            }
+        }
+
+        const backdrop = document.querySelector('[data-hs-overlay-backdrop-template]');
+        if (backdrop) {
+            backdrop.remove();
+        }
+
+        navigate(url);
+
+        document.documentElement.classList.add("selection:bg-primary", "selection:text-white");
+
+        const elementsWithOverflowHidden = document.querySelectorAll('[style*="overflow: hidden"]');
+        elementsWithOverflowHidden.forEach(element => {
+            element.style.overflow = '';
+        });
+    };
+
+    return (
+      <div
+          className={className}
+          onClick={() => closeOverlayAndBackdrop(item?.url)}
+      >
+          {item.label}
+      </div>
+    // <Link
+    //   className={className}
+    //   // to={item.url ?? ""}
+    //   target={item.target}
+    //   data-menu-key={item.key}
+    //   onClick={() => navigate(item?.url)}
+    // >
+    //   {item.label}
+    // </Link>
   );
 };
 

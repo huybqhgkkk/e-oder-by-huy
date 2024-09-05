@@ -5,7 +5,7 @@ import { TextFormInput } from "@/components";
 import { useNavigate } from "react-router-dom";
 import { forgotPasswordCheckMail } from "@/service/apis.jsx";
 import { toast } from "sonner";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useTranslation } from 'react-i18next';
 
 const ForgotPasswordForm = () => {
@@ -19,9 +19,13 @@ const ForgotPasswordForm = () => {
             .required(t('enter_email')),
     });
 
-    const { control, handleSubmit } = useForm({
+    const { control, handleSubmit, reset, getValues } = useForm({
         resolver: yupResolver(registerFormSchema),
     });
+
+    useEffect(() => {
+        reset(getValues());
+    }, [t]);
 
     const submit = (values) => {
         setLoading(true);

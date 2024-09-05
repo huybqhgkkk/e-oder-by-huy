@@ -6,7 +6,12 @@ import {
     googleIconImg,
     facebookIconImg,
 } from "@/assets/data/images";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {getAuthGmail} from "@/service/apis.jsx";
+import {errorMessage} from "@/helpers/message.js";
+import {setLoading} from "@/store/reduce/authSlice.js";
+import {useTranslation} from "react-i18next";
+import {useDispatch} from "react-redux";
 
 const AuthFormLayout = ({
                             authTitle,
@@ -15,9 +20,50 @@ const AuthFormLayout = ({
                             bottomLink,
                             hasThirdPartyAuth,
                         }) => {
+    const {t} =useTranslation();
+    const dispatch = useDispatch();
+    const generateCodeVerifier = () => {
+        const array = new Uint8Array(32);
+        window.crypto.getRandomValues(array);
+        const verifier = btoa(String.fromCharCode.apply(null, array))
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=+$/, '');
+        return verifier;
+    };
+
+    const generateCodeChallenge = async (verifier) => {
+        const buffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier));
+        const hash = Array.from(new Uint8Array(buffer));
+        const challenge = btoa(String.fromCharCode.apply(null, hash))
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=+$/, '');
+        return challenge;
+    };
+
+    const handelLoginGmail = () => {
+        try {
+            dispatch(setLoading(true));
+            const verifier = generateCodeVerifier();
+            localStorage.setItem('verifier', verifier);
+            const code_challenge = generateCodeChallenge(verifier);
+            code_challenge.then(async res => {
+                const resAuth = await getAuthGmail(encodeURIComponent(res));
+                window.location.href = resAuth?.data?.authURL;
+            })
+        }
+        catch (err) {
+            errorMessage(err?.response?.data?.result?.errorMessage || t("error_request"));
+        } finally {
+            dispatch(setLoading(false));
+        }
+    }
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
     return (
         <div className="flex items-center justify-center min-h-screen px-4 py-8">
             <div className="flex flex-col w-full max-w-lg p-6 bg-white shadow-lg rounded-lg">
@@ -51,19 +97,20 @@ const AuthFormLayout = ({
                     {hasThirdPartyAuth && (
                         <div className="flex items-center justify-center gap-4 mt-6">
                             <img
+                                onClick={handelLoginGmail}
                                 height={32}
                                 width={32}
                                 alt="social-login-google"
                                 src={googleIconImg}
-                                className="h-8 w-8"
+                                className="h-8 w-8 cursor-pointer"
                             />
-                            <img
-                                height={32}
-                                width={32}
-                                alt="social-login-facebook"
-                                src={facebookIconImg}
-                                className="h-8 w-8"
-                            />
+                            {/*<img*/}
+                            {/*    height={32}*/}
+                            {/*    width={32}*/}
+                            {/*    alt="social-login-facebook"*/}
+                            {/*    src={facebookIconImg}*/}
+                            {/*    className="h-8 w-8"*/}
+                            {/*/>*/}
                         </div>
                     )}
                 </div>

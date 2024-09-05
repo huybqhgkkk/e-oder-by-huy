@@ -11,6 +11,7 @@ import {jwtDecode} from 'jwt-decode';
 import {useDispatch} from "react-redux";
 import {setIsAuthenticated, setRole} from "@/store/reduce/authSlice.js";
 import {loginAccount} from "@/service/apis.jsx";
+import {useTranslation} from "react-i18next";
 
 const useLogin = () => {
     const [loading, setLoading] = useState(false);
@@ -18,15 +19,20 @@ const useLogin = () => {
     const {session, saveSession} = useAuthContext();
     const [searchParams] = useSearchParams();
     const dispatch = useDispatch();
+    const {t} = useTranslation();
 
     const loginFormSchema = yup.object({
         username: yup.string().required("Please enter your username"),
         password: yup.string().required("Please enter your password"),
     });
 
-    const {control, handleSubmit, reset} = useForm({
+    const {control, handleSubmit, reset, getValues} = useForm({
         resolver: yupResolver(loginFormSchema),
     });
+
+    useEffect(() => {
+        reset(getValues());
+    }, [t]);
 
     const login = handleSubmit(async (values) => {
         setLoading(true);

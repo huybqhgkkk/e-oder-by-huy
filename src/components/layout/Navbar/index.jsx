@@ -6,7 +6,7 @@ import {
   LuSearch,
   LuShoppingCart,
   LuUser,
-  LuUserCircle,
+  LuUserCircle, LuX,
 } from "react-icons/lu";
 import SimplebarReactClient from "../../SimplebarReactClient";
 import TabNavigation from "./TabNavigation";
@@ -65,14 +65,14 @@ const Navbar = () => {
                   <ProductSearchBar />
                 </li>
 
-                <li className="menu-item flex 2xl:hidden">
-                  <button
-                    data-hs-overlay="#mobileSearchSidebar"
-                    className="relative flex text-base text-default-600 transition-all hover:text-primary"
-                  >
-                    <LuSearch size={20} />
-                  </button>
-                </li>
+                {/*<li className="menu-item flex 2xl:hidden">*/}
+                {/*  <button*/}
+                {/*    data-hs-overlay="#mobileSearchSidebar"*/}
+                {/*    className="relative flex text-base text-default-600 transition-all hover:text-primary"*/}
+                {/*  >*/}
+                {/*    <LuSearch size={20} />*/}
+                {/*  </button>*/}
+                {/*</li>*/}
 
                 <CartAndWishList />
 
@@ -133,26 +133,59 @@ const Navbar = () => {
 
       <div
         id="mobile-menu"
-        className="hs-overlay fixed left-0 top-0 z-60 hidden h-full w-full max-w-[270px] -translate-x-full transform border-r border-default-200  bg-white transition-all hs-overlay-open:translate-x-0 dark:bg-default-50"
+        className="hs-overlay fixed left-0 top-0 z-70 hidden h-full w-full max-w-[270px] -translate-x-full transform border-r border-default-200  bg-white transition-all hs-overlay-open:translate-x-0 dark:bg-default-50"
         tabIndex={-1}
       >
-        <div className="flex h-16 items-center justify-center border-b border-dashed border-default-200 transition-all duration-300">
-          <Link to="/home">
-            <img
-              src={logoDarkImg}
-              width={130}
-              height={40}
-              alt="logo"
-              className="flex h-10 dark:hidden"
-            />
-            <img
-              src={logoLightImg}
-              width={130}
-              height={40}
-              alt="logo"
-              className="hidden h-10 dark:flex"
-            />
-          </Link>
+        {/*<div className="flex h-16 items-center justify-center border-b border-dashed border-default-200 transition-all duration-300">*/}
+        {/*  <Link to="/home">*/}
+        {/*    <img*/}
+        {/*      src={logoDarkImg}*/}
+        {/*      width={130}*/}
+        {/*      height={40}*/}
+        {/*      alt="logo"*/}
+        {/*      className="flex h-10 dark:hidden"*/}
+        {/*    />*/}
+        {/*    <img*/}
+        {/*      src={logoLightImg}*/}
+        {/*      width={130}*/}
+        {/*      height={40}*/}
+        {/*      alt="logo"*/}
+        {/*      className="hidden h-10 dark:flex"*/}
+        {/*    />*/}
+        {/*  </Link>*/}
+        {/*</div>*/}
+        <div className="sticky top-0 z-70 flex h-18 w-full border-b border-default-200 bg-white dark:bg-default-50 hide-in-print">
+          <div className="flex w-full items-center gap-4 px-6">
+            <div className="flex lg:hidden">
+              <button
+                  type="button"
+                  className="text-default-500 hover:text-default-600"
+                  data-hs-overlay="#mobile-menu"
+                  aria-controls="mobile-menu"
+                  aria-label="Toggle navigation"
+              >
+                <LuX size={24} />
+              </button>
+            </div>
+            <div className="flex">
+              <Link to="/home">
+                <img
+                    src={logoDarkImg}
+                    height={40}
+                    width={130}
+                    alt="logo"
+                    className="flex h-10 dark:hidden"
+                />
+                <img
+                    src={logoLightImg}
+                    height={40}
+                    width={130}
+                    alt="logo"
+                    className="hidden h-10 dark:flex"
+                />
+              </Link>
+            </div>
+          </div>
         </div>
         <SimplebarReactClient className="h-[calc(100%-4rem)]">
           <nav className="hs-accordion-group flex w-full flex-col flex-wrap p-4">

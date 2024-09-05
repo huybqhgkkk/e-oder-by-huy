@@ -20,12 +20,16 @@ const OTPForm = ({email}) => {
             .matches(/^\d{6}$/, t('invalid_otp'))
             .required(t('enter_otp')),
     });
-    const {control, handleSubmit, formState: {errors}} = useForm({
+    const {control, handleSubmit, formState: {errors}, reset, getValues} = useForm({
         resolver: yupResolver(otpFormSchema),
         defaultValues: {
             otp: "",
         },
     });
+
+    useEffect(() => {
+        reset(getValues());
+    }, [t]);
 
     useEffect(() => {
         let countdown;

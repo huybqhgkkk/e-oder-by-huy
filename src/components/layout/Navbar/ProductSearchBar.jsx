@@ -42,10 +42,10 @@ const ProductSearchBar = () => {
       </div>
 
       <button className="hidden" type="submit" />
-      {createPortal(
-        <FloatingSearchBar handleSearch={handleSearch} searchValue={search} />,
-        document.body
-      )}
+      {/*{createPortal(*/}
+      {/*  <FloatingSearchBar handleSearch={handleSearch} searchValue={search} />,*/}
+      {/*  document.body*/}
+      {/*)}*/}
     </form>
   );
 };

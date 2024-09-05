@@ -1,34 +1,63 @@
-import {get, post, put, del, uploadImage} from "@/helpers/api.js"
-import { api } from "../helpers/api";
+import { get, post, put, del } from "@/helpers/api.js";
 
-const loginAccount = (data) => {
-  return post("/auth/login", data);
-}
-const registerAccount = (data) => {
-  return  post("/auth/register", data);
-}
-const reSendOtp = (email) => {
-  return  put(`/auth/regenerate-otp?email=${email}`);
-}
-const verifyAccount = (data) => {
-  return  post(`/auth/verify-account?email=${encodeURIComponent(data?.email)}&otp=${encodeURIComponent(data?.otp)}`);
-}
-const forgotPassword = (data) => {
-  return  put("/auth/forgot-password", data);
-}
-const logoutAccount = () => {
-  return  post("/logout");
-}
-const forgotPasswordCheckMail = (email) => {
-  return  post(`/auth/forgot-password/check-mail?email=${email}`)
-}
-const changePassword = (data) => {
-  return  post("/change-password", data)
-}
-const getEmployees = (data) => {
-  return  get("/management/employees", data)
-}
+// Authentication APIs
+const loginAccount = (data) => post("/api/v1/auth/login", data);
+const registerAccount = (data) => post("/api/v1/auth/register", data);
+const reSendOtp = (email) => put(`/api/v1/auth/regenerate-otp?email=${email}`);
+const verifyAccount = (data) => post(`/api/v1/auth/verify-account?email=${data?.email}&otp=${data?.otp}`);
+const forgotPassword = (data) => put("/api/v1/auth/forgot-password", data);
+const logoutAccount = () => post("/api/v1/logout");
+const forgotPasswordCheckMail = (email) => post(`/api/v1/auth/forgot-password/check-mail?email=${email}`);
+const changePassword = (data) => post("/api/v1/change-password", data);
+const getInfo = () => get("/api/v1/management/user/info");
+const editInfo = (data) => post("/api/v1/user/info", data);
+const getMapDetail = (placeId) => get("/api/v1/maps/detail", { params: { placeId } });
+const getAuthGmail = (code_challenge) => get("/auth/url/v2", { params: { code_challenge } });
+const loginGmail = (payload) => get("/auth/callback/v2", payload);
 
+// Language APIs
+export const LanguageAPIs = {
+  getLanguage: () => get("/api/v1/management/user/language"),
+  setLanguage: (lang) => post(`/api/v1/management/user/language?lang=${lang}`),
+};
+
+// Branch APIs
+export const BranchAPIs = {
+  getBranchList: (data) => post("/api/v1/management/branch/list", data),
+  addBranch: (data) => post("/api/v1/management/branch", data),
+  editBranch: (data) => put("/api/v1/management/branch", data),
+  deleteBranch: (id) => del(`/api/v1/management/branch`, { data: { id } }),
+  getBranchDetail: (id) => get(`/api/v1/management/branch?branchId=${id}`),
+};
+
+// Employee APIs
+export const EmployeeAPIs = {
+  getList: ({ branchId = 8, ...params }) => get("/api/v1/management/employees", { params: { branchId, ...params } }),
+  addEmployee: (data) => post("/api/v1/management/employee/add", data),
+  editEmployee: (data) => put("/api/v1/management/employee/edit", data),
+  getEmployee: (id) => get(`/api/v1/management/employee/info?id=${id}`),
+  changeEmployee: (data) => post("/api/v1/management/employee/change-password", data),
+  deleteEmployee: (emailOrUsername) => del("/api/v1/management/employee/delete", { data: { emailOrUsername } }),
+};
+
+// Menu APIs
+export const MenuAPIs = {
+  GetList: ({ branchId, ...params }) => get("/api/v1/management/menu", { params: { branchId, ...params } }),
+  EditItem: (data) => put("/api/v1/management/menu", data),
+    GetOne: async (id) => {
+        return await get(`/api/v1/management/menu/info/${id}`);
+    },
+};
+
+// Category Item APIs
+export const CategoryItemAPIs = {
+  GetList: ({ branchId, name }) => get("/api/v1/management/categories", { params: { branchId, name } }),
+};
+
+// Branch Item APIs
+export const BranchItemAPIs = {
+  GetList: ({ branchId, name }) => get("/api/v1/management/branch/option", { params: { branchId, name } }),
+};
 
 export {
   loginAccount,
@@ -39,21 +68,9 @@ export {
   logoutAccount,
   forgotPasswordCheckMail,
   changePassword,
-  getEmployees,
-}
-
-export const EmployeeAPIs = {
-  GetList: async ({branchId = 8, name, status, createdDateFrom, createdDateTo, lastUpdatedDateFrom, lastUpdatedDateTo, pageNumber, pageSize})=>{
-    const payload = {params:{branchId, name, status, createdDateFrom, createdDateTo, lastUpdatedDateFrom, lastUpdatedDateTo, pageNumber, pageSize}};
-    return await get("/management/employees", payload);
-  },
-  AddEmployee: async (data) => {
-    return await post("/management/employee/add", data)
-  },
-  EditEmployee: async (data) => {
-    return await post("/management/employee/edit", data)
-  },
-  getEmployee: async (id) => {
-    return await get(`/management/employee/info?id=${id}`)
-  }
-}
+  getInfo,
+  editInfo,
+  getMapDetail,
+  getAuthGmail,
+  loginGmail,
+};
